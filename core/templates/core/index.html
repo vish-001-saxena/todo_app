@@ -59,12 +59,13 @@
 </head>
 <body>
 <div class="container">
-    <h1>📝 My To-Do List</h1>
+    <h1>📝To-Do List</h1>
 
     <form method="POST">
         {% csrf_token %}
         {{ form.title }}
         <button type="submit">Add</button>
+        <button type="delete">Delete</button>
     </form>
 
     <ul>
