@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Task
 from .forms import TaskForm
 
+
 def home(request):
     if request.method == 'POST':
         form = TaskForm(request.POST)

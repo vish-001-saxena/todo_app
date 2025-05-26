@@ -1,76 +1,117 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>My To-Do List</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            padding: 30px;
         }
 
         .container {
-            max-width: 500px;
+            max-width: 600px;
             margin: auto;
-            background: white;
+            background: #fff;
             padding: 30px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            border-radius: 8px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         h1 {
             text-align: center;
+            color: #333;
+            margin-bottom: 20px;
         }
 
         form {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
         }
 
-        input[type="text"] {
-            flex: 1;
-            padding: 8px;
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #444;
+        }
+
+        input[type="text"],
+        input[type="date"] {
+            padding: 10px;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 6px;
+            font-size: 14px;
         }
 
         button {
-            padding: 8px 12px;
+            padding: 10px;
+            font-size: 15px;
             background-color: #007bff;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
         }
 
         ul {
             list-style: none;
-            padding-left: 0;
+            padding: 0;
         }
 
         li {
-            padding: 10px;
-            background: #eee;
-            margin-bottom: 8px;
-            border-radius: 4px;
+            background: #f8f9fa;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #007bff;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .task-title {
+            font-weight: 500;
+        }
+
+        .task-date {
+            color: #888;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>📝To-Do List</h1>
+    <h1>📝 My To-Do List</h1>
 
     <form method="POST">
         {% csrf_token %}
-        {{ form.title }}
-        <button type="submit">Add</button>
-        <button type="delete">Delete</button>
+        {{ form.non_field_errors }}
+        <div>
+            {{ form.title.label_tag }}<br>
+            {{ form.title }}
+            {{ form.title.errors }}
+        </div>
+        <div>
+            {{ form.scheduled_date.label_tag }}<br>
+            {{ form.scheduled_date }}
+            {{ form.scheduled_date.errors }}
+        </div>
+        <button type="submit">Add Task</button>
     </form>
 
     <ul>
         {% for task in tasks %}
-            <li>{{ task.title }}</li>
+            <li>
+                <span class="task-title">{{ task.title }}</span>
+                <span class="task-date">{{ task.scheduled_date|date:"M d, Y" }}</span>
+            </li>
         {% empty %}
             <li>No tasks yet. Start by adding one!</li>
         {% endfor %}
