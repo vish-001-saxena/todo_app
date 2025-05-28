@@ -14,7 +14,7 @@ def home(request):
         form = TaskForm()
 
     tasks = Task.objects.all()
-    return render(request, 'core/index.html', {'form': form, 'tasks': tasks})
+    return render(request, 'core/templates/index.html', {'form': form, 'tasks': tasks})
 def task_list(request):
     tasks = Task.objects.all().order_by('scheduled_date')
     form = TaskForm(request.POST or None)
@@ -40,5 +40,5 @@ def edit_task(request, task_id):
     if request.method == 'POST' and form.is_valid():
         form.save()
         return redirect('task_list')
-    return render(request, 'todo/edit_task.html', {'form': form})
+    return render(request, 'templates/core/edit_task.html', {'form': form})
 
