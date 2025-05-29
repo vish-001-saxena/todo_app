@@ -1,20 +1,19 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Task
 from .forms import TaskForm
-from django.shortcuts import render, redirect, get_object_or_404
-
 
 def home(request):
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('home')  # redirect to named URL pattern 'home'
     else:
         form = TaskForm()
 
     tasks = Task.objects.all()
-    return render(request, 'core/templates/index.html', {'form': form, 'tasks': tasks})
+    return render(request, 'core/index.html', {'form': form, 'tasks': tasks})  # template path fixed
+
 def task_list(request):
     tasks = Task.objects.all().order_by('scheduled_date')
     form = TaskForm(request.POST or None)
@@ -40,5 +39,4 @@ def edit_task(request, task_id):
     if request.method == 'POST' and form.is_valid():
         form.save()
         return redirect('task_list')
-    return render(request, 'templates/core/edit_task.html', {'form': form})
-
+    return render(request, 'core/edit_task.html', {'form': form})  # template path fixed
